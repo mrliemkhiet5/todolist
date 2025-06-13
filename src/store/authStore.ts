@@ -29,11 +29,13 @@ export const useAuthStore = create<AuthState>()(
         
         try {
           const { data, error } = await supabase.auth.signInWithPassword({
-            email,
+            email: email.trim().toLowerCase(),
             password,
           });
 
-          if (error) throw error;
+          if (error) {
+            throw new Error(error.message);
+          }
 
           if (data.user) {
             set({ user: data.user });
@@ -42,8 +44,9 @@ export const useAuthStore = create<AuthState>()(
           
           set({ isLoading: false });
         } catch (error: any) {
+          console.error('Login error:', error);
           set({ 
-            error: error.message || 'Login failed', 
+            error: error.message || 'Login failed. Please check your credentials.', 
             isLoading: false 
           });
         }
@@ -53,28 +56,66 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true, error: null });
         
         try {
+          // Validate inputs
+          if (!name.trim()) {
+            throw new Error('Name is required');
+          }
+          if (!email.trim()) {
+            throw new Error('Email is required');
+          }
+          if (password.length < 6) {
+            throw new Error('Password must be at least 6 characters');
+          }
+
           const { data, error } = await supabase.auth.signUp({
-            email,
+            email: email.trim().toLowerCase(),
             password,
             options: {
               data: {
-                name,
+                name: name.trim(),
+                full_name: name.trim(),
               },
             },
           });
 
-          if (error) throw error;
+          if (error) {
+            throw new Error(error.message);
+          }
 
           if (data.user) {
             set({ user: data.user });
-            // Profile will be created automatically by the trigger
-            await get().fetchProfile();
+            
+            // Wait a moment for the trigger to create the profile
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Try to fetch the profile, create it manually if it doesn't exist
+            try {
+              await get().fetchProfile();
+            } catch (profileError) {
+              console.warn('Profile not found, creating manually:', profileError);
+              
+              // Create profile manually if trigger failed
+              const { error: profileCreateError } = await supabase
+                .from('profiles')
+                .insert({
+                  id: data.user.id,
+                  email: data.user.email!,
+                  name: name.trim(),
+                });
+              
+              if (profileCreateError) {
+                console.warn('Manual profile creation failed:', profileCreateError);
+              } else {
+                await get().fetchProfile();
+              }
+            }
           }
           
           set({ isLoading: false });
         } catch (error: any) {
+          console.error('Signup error:', error);
           set({ 
-            error: error.message || 'Signup failed', 
+            error: error.message || 'Signup failed. Please try again.', 
             isLoading: false 
           });
         }
@@ -85,6 +126,7 @@ export const useAuthStore = create<AuthState>()(
           await supabase.auth.signOut();
           set({ user: null, profile: null, error: null });
         } catch (error: any) {
+          console.error('Logout error:', error);
           set({ error: error.message || 'Logout failed' });
         }
       },
@@ -100,11 +142,19 @@ export const useAuthStore = create<AuthState>()(
             .eq('id', user.id)
             .single();
 
-          if (error) throw error;
+          if (error) {
+            if (error.code === 'PGRST116') {
+              // Profile doesn't exist, this is expected for new users
+              console.log('Profile not found for user:', user.id);
+              return;
+            }
+            throw error;
+          }
 
           set({ profile: data });
         } catch (error: any) {
           console.error('Error fetching profile:', error);
+          // Don't set error state for profile fetch failures
         }
       },
 
@@ -123,13 +173,13 @@ export const useAuthStore = create<AuthState>()(
 );
 
 // Initialize auth state
-supabase.auth.onAuthStateChange((event, session) => {
+supabase.auth.onAuthStateChange(async (event, session) => {
   const { fetchProfile } = useAuthStore.getState();
   
-  if (session?.user) {
+  if (event === 'SIGNED_IN' && session?.user) {
     useAuthStore.setState({ user: session.user });
-    fetchProfile();
-  } else {
+    await fetchProfile();
+  } else if (event === 'SIGNED_OUT') {
     useAuthStore.setState({ user: null, profile: null });
   }
 });
