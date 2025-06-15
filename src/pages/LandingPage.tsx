@@ -54,21 +54,21 @@ const LandingPage = () => {
 
   const testimonials = [
     {
-      name: "Sarah Chen",
+      name: "Nguyễn Xuân Lĩnh",
       role: "Product Manager at TechCorp",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=64&h=64&fit=crop&crop=face",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=NguyenXuanLinh&backgroundColor=b6e3f4&topType=ShortHairShortFlat&accessoriesType=Prescription02&hairColor=BrownDark&facialHairType=Blank&clotheType=Hoodie&clotheColor=Blue03&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light",
       content: "TaskFlow transformed how our team manages projects. The AI suggestions are incredibly accurate."
     },
     {
-      name: "Michael Rodriguez",
+      name: "Trần Khánh",
       role: "Design Lead at StartupXYZ",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&crop=face",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=TranKhanh&backgroundColor=c0aede&topType=ShortHairShortWaved&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&clotheType=BlazerShirt&clotheColor=Blue01&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light",
       content: "The Gantt charts and timeline view help us stay on track with complex design projects."
     },
     {
-      name: "Emily Johnson",
+      name: "Ngô Lập",
       role: "Founder at InnovateLab",
-      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=64&h=64&fit=crop&crop=face",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=NgoLap&backgroundColor=ffd93d&topType=ShortHairDreads01&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=ShirtCrewNeck&clotheColor=Gray01&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light",
       content: "Best productivity tool we've used. The interface is beautiful and incredibly intuitive."
     }
   ];
@@ -100,7 +100,7 @@ const LandingPage = () => {
                 Log in
               </Link>
               <Link 
-                to="/auth" 
+                to="/auth?mode=signup" 
                 className="btn-primary flex items-center space-x-2"
               >
                 <span>Get Started</span>
@@ -128,7 +128,7 @@ const LandingPage = () => {
                 <Link to="/contact" className="text-gray-600 hover:text-gray-900 transition-colors">Contact</Link>
                 <hr className="border-gray-200" />
                 <Link to="/auth" className="text-gray-600 hover:text-gray-900 transition-colors">Log in</Link>
-                <Link to="/auth" className="btn-primary inline-flex items-center justify-center space-x-2">
+                <Link to="/auth?mode=signup" className="btn-primary inline-flex items-center justify-center space-x-2">
                   <span>Get Started</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
@@ -170,7 +170,7 @@ const LandingPage = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <Link 
-                to="/auth" 
+                to="/auth?mode=signup" 
                 className="btn-primary text-lg px-8 py-3 flex items-center space-x-2 hover-lift"
               >
                 <span>Start Free Trial</span>
@@ -324,7 +324,7 @@ const LandingPage = () => {
               Join thousands of teams who have transformed their workflow with TaskFlow.
             </p>
             <Link 
-              to="/auth"
+              to="/auth?mode=signup"
               className="inline-flex items-center space-x-2 bg-white text-blue-600 font-semibold px-8 py-4 rounded-lg hover:bg-gray-50 transition-all duration-200 hover-lift text-lg"
             >
               <span>Start Your Free Trial</span>

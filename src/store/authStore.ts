@@ -12,6 +12,7 @@ interface AuthState {
   login: (email: string, password: string) => Promise<void>;
   signup: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  updatePassword: (currentPassword: string, newPassword: string) => Promise<void>;
   clearError: () => void;
   fetchProfile: () => Promise<void>;
 }
@@ -75,6 +76,7 @@ export const useAuthStore = create<AuthState>()(
                 name: name.trim(),
                 full_name: name.trim(),
               },
+              emailRedirectTo: undefined, // Disable email confirmation
             },
           });
 
@@ -116,6 +118,45 @@ export const useAuthStore = create<AuthState>()(
           console.error('Signup error:', error);
           set({ 
             error: error.message || 'Signup failed. Please try again.', 
+            isLoading: false 
+          });
+        }
+      },
+
+      updatePassword: async (currentPassword: string, newPassword: string) => {
+        set({ isLoading: true, error: null });
+        
+        try {
+          const { user } = get();
+          if (!user) {
+            throw new Error('Not authenticated');
+          }
+
+          // First verify current password by attempting to sign in
+          const { error: verifyError } = await supabase.auth.signInWithPassword({
+            email: user.email!,
+            password: currentPassword,
+          });
+
+          if (verifyError) {
+            throw new Error('Current password is incorrect');
+          }
+
+          // Update password
+          const { error } = await supabase.auth.updateUser({
+            password: newPassword
+          });
+
+          if (error) {
+            throw error;
+          }
+
+          set({ isLoading: false });
+          alert('Password updated successfully!');
+        } catch (error: any) {
+          console.error('Password update error:', error);
+          set({ 
+            error: error.message || 'Failed to update password', 
             isLoading: false 
           });
         }

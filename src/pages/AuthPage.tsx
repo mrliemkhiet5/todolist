@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { CheckCircle, Eye, EyeOff, Loader2, ArrowLeft } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 
 const AuthPage = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [searchParams] = useSearchParams();
+  const initialMode = searchParams.get('mode') === 'signup' ? false : true;
+  const [isLogin, setIsLogin] = useState(initialMode);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: '',

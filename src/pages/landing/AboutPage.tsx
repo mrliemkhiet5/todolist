@@ -6,27 +6,27 @@ import { CheckCircle, ArrowLeft, Users, Target, Award, Heart } from 'lucide-reac
 const AboutPage = () => {
   const team = [
     {
-      name: "Sarah Johnson",
+      name: "Nguyễn Xuân Lĩnh",
       role: "CEO & Co-founder",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face",
+      image: "https://api.dicebear.com/7.x/avataaars/svg?seed=NguyenXuanLinh&backgroundColor=b6e3f4&topType=ShortHairShortFlat&accessoriesType=Prescription02&hairColor=BrownDark&facialHairType=Blank&clotheType=Hoodie&clotheColor=Blue03&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light",
       bio: "Former VP of Product at Slack with 10+ years in productivity software."
     },
     {
-      name: "Michael Chen",
+      name: "Trần Khánh",
       role: "CTO & Co-founder",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
+      image: "https://api.dicebear.com/7.x/avataaars/svg?seed=TranKhanh&backgroundColor=c0aede&topType=ShortHairShortWaved&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&clotheType=BlazerShirt&clotheColor=Blue01&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light",
       bio: "Ex-Google engineer passionate about building scalable, user-friendly platforms."
     },
     {
-      name: "Emily Rodriguez",
+      name: "Ngô Lập",
       role: "Head of Design",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
+      image: "https://api.dicebear.com/7.x/avataaars/svg?seed=NgoLap&backgroundColor=ffd93d&topType=ShortHairDreads01&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=ShirtCrewNeck&clotheColor=Gray01&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light",
       bio: "Award-winning designer focused on creating intuitive user experiences."
     },
     {
-      name: "David Kim",
+      name: "Ngô Nhân",
       role: "Head of Engineering",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
+      image: "https://api.dicebear.com/7.x/avataaars/svg?seed=NgoNhan&backgroundColor=ffdfbf&topType=ShortHairTheCaesar&accessoriesType=Blank&hairColor=Brown&facialHairType=Blank&clotheType=CollarSweater&clotheColor=Blue02&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light",
       bio: "Full-stack engineer with expertise in distributed systems and AI."
     }
   ];
@@ -323,7 +323,7 @@ const AboutPage = () => {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
               <Link 
-                to="/auth"
+                to="/auth?mode=signup"
                 className="bg-white text-blue-600 font-semibold px-8 py-4 rounded-lg hover:bg-gray-50 transition-all duration-200 hover-lift text-lg"
               >
                 Start Free Trial
